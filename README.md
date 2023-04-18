@@ -28,58 +28,60 @@ The point estimates for Julian day at peak aphid density as a function of CDD (m
 # Phenology Models by Ecodata
 We've done work spanning on arthropod phenology spanning multiple repos, typically with GAMs using both Bayesian (with the brms library) and frequentist (with the mgcv library) approaches. These repos contain useful functions including: calculating degree days from climate data, scraping climate data, fitting and visualising phenology models, and displaying interactive date/location based phenology curves in Shiny.
 
-## 1. iNatML
-#### Active: Dec 2021 - Mar 2022
-#### By: Rob, Michael
-#### Repo: https://github.com/robclark19/iNatML
-#### Methods: 
-#### Overview:
-(Pic)
+## 1. tick_modeling
+#### Active May - October 2022
+#### By: Michael
+#### Repo: https://github.com/ecodata-technology/tick_modeling
+#### Highlights:
+#### Overview: 
 
-## 2. phenogamShiny
+(pic)
+
+## 2. aphid_modeling
+#### Active: May - October 2022
+#### By: Michael
+#### Repo: https://github.com/ecodata-technology/aphid_modeling
+#### Highlights:
+#### Overview: 
+(pic)
+
+## 3. phenogamShiny
 #### Active: May 2022, March 2023
 #### By: Rob, Michael, Alex
 #### Repo: https://github.com/ecodata-technology/phenogamShiny
-#### Methods: 
-#### Overview:
+#### Highlights:
+#### Overview: 
 Alex built on the code for hosting on AWS and embedding in a marketing one-pager, mainly with added CSS for presentation. (Need to merge on the original still.)
-
-(Pic)
-
-## 3. ecodatamisc
-#### Active: March - Jan 2023
-#### By: Rob, Tim, Michael
-#### Repo: https://github.com/ecodata-technology/ecodatamisc
-#### Methods: 
-#### Overview:
-Contains a daymet scrape by hand.
-
-(pic)
 
 ## 4. phenogamML
 #### Active: April 2022
 #### By: Rob, Michael
 #### Repo: https://github.com/ecodata-technology/phenogamML
-#### Methods:
-#### Overview:
+#### Highlights:
+#### Overview: 
 `./src/cdd_density_functions`
 Contains a daymet scrape using daymetr.
 contains some python.
 
 (pic)
 
-## 5. aphid_modeling
-#### Active: May - October 2022
-#### By: Michael
-#### Repo: https://github.com/ecodata-technology/aphid_modeling
-#### Methods: 
-#### Overview:
+## 5. ecodatamisc
+#### Active: March 2022 - Jan 2023
+#### By: Rob, Tim, Michael
+#### Repo: https://github.com/ecodata-technology/ecodatamisc
+#### Highlights: 
+- plot_gam: plot mgcv (frequentist) gam response with a prediction ribbon. (get example for image).
+- add_siteday_cdd: fetch CDD for each site, year, and julian day (using get_daymet rather than daymetr).
+
+#### Overview: 
+Library of various functions to streamline and automate common tasks in Ecodata work. Also has a get_daymet helper but superseded by the daymetr library.
+
 (pic)
 
-## 6. tick_modeling
-#### Active May - October 2022
-#### By: Michael
-#### Repo: https://github.com/ecodata-technology/tick_modeling
-#### Methods: 
-#### Overview:
-(pic)
+## 6. iNatML
+#### Active: Dec 2021 - Mar 2022
+#### By: Rob, Michael
+#### Repo: https://github.com/robclark19/iNatML
+#### Highlights:
+#### Overview: 
+(Pic)

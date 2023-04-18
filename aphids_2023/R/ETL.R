@@ -3,6 +3,7 @@
 
 library(tidyverse)
 library(brms)
+library(mgcv)
 library(tidybayes)
 library(ecodatamisc)
 
@@ -17,7 +18,14 @@ library(ecodatamisc)
 dat = read.csv("./aphids_2023/osf/Aggregated Aphid Data/Idaho pan trap with degree days.csv") %>%
   mutate(
     Site = str_remove(SiteName, "[:digit:]{4}-")
-  )
+  ) %>%
+  select(Site,Latitude,Longitude,Elevation,Year,JulianDay,Aphids_DD,AphidCount) %>%
+  # group_by(Site,Latitude,Longitude,Elevation,Year) %>%
+  arrange(Aphids_DD) %>%
+  mutate(
+    ccts = cumsum(AphidCount)
+  ) %>%
+  ungroup()
 
 vdat = read.csv("./aphids_2023/osf/Aggregated Aphid Data/Vetch 2019 and 2020 with degree days.csv")
 
@@ -82,6 +90,45 @@ p1 <- m1_p %>%
   theme()
 ggsave(filename="agg_gam.png",path="./aphids_2023/figures",
        width=15,height=11,units="cm",dpi=300,device=ragg::agg_png())
+
+# Try on cumulative counts #
+# Way too slow with brms - swap to mgcv
+# m1c <- brm(ccts ~ s(Aphids_DD),
+#           data = dat,
+#           chains = 4, cores = 4,
+#           iter = 5000, warmup = 1000,
+#           control = list(adapt_delta = 0.95,
+#                          max_treedepth = 15)
+# )
+m1c <- gam(ccts ~ s(Aphids_DD,k=11),
+           data = dat
+)
+gam.check(m1c)
+#sm = m1c[['smooth']][[1]]
+#sm$sm$margin
+# write_rds(m1c, "./aphids_2023/fit_models/cumsum_pooled_gam.rds")
+
+# m1c_p <- data.frame(Aphids_DD = seq(from = 0, to = max(dat$Aphids_DD, na.rm = T), by = 1)) %>%
+#   add_fitted_draws(m1c) %>%
+#   median_hdci()
+
+# p1c <- m1c_p %>%
+#   ggplot(aes(x = Aphids_DD, y = .value, ymin = .lower, ymax = .upper)) +
+#   geom_line() +
+#   geom_ribbon(alpha = 0.2) +
+#   labs(y = "Estimated Sampling Abundance",
+#        title = "Estimated Cumulative Aphid densities",
+#        subtitle = "Data aggregated across sites and years from Idaho Pan Trapping.") +
+#   theme()
+
+plot_gam(m1c,xlab="Aphid CDD",ylab="Cumulative Counts")
+
+ggsave(filename="cumsum_pooled_gam.png",path="./aphids_2023/figures",
+       width=15,height=11,units="cm",dpi=300,device=ragg::agg_png())
+
+# Comes out jank because too many site-year replicates that actually have sizeable counts cut off around 2000DD,
+# while many sites with zeroes have data points to the end of the year. Could pad all years out to 365 but that's assuming counts would stay the same
+# Nothing about this model seems very useful.
 
 
 # Try mixed models #
